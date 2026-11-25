@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ZeynFreelance</title>
+  <meta name="theme-color" content="#07080d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ZeynFreelance">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="glow"></div>
+
+  <main id="login" hidden>
+    <div class="login-card">
+      <div class="logo">Z</div>
+      <h1>ZeynFreelance</h1>
+      <p class="muted">Ton QG de prospection et de suivi.</p>
+      <form id="login-form">
+        <input id="email" type="email" placeholder="Email" autocomplete="username" required>
+        <input id="password" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+        <button class="btn" type="submit">Se connecter</button>
+        <p id="login-msg" class="err-msg"></p>
+      </form>
+      <p class="hint">Connecte-toi avec ton compte admin Blourr.</p>
+    </div>
+  </main>
+
+  <div id="app" hidden>
+    <aside class="side">
+      <div class="brand"><span class="logo sm">Z</span><b>ZeynFreelance</b></div>
+      <nav class="nav">
+        <button data-nav="home"><span>⌂</span><em>Aujourd'hui</em></button>
+        <button data-nav="ai"><span>✦</span><em>IA</em></button>
+        <button data-nav="prospects"><span>☰</span><em>Prospects</em></button>
+        <button data-nav="map"><span>◎</span><em>Carte</em></button>
+        <button data-nav="biz"><span>€</span><em>Business</em></button>
+      </nav>
+    </aside>
+    <button class="gear" data-act="settings" aria-label="Réglages">⚙</button>
+    <section id="view"></section>
+  </div>
+
+  <div id="sheet" hidden><div class="sheet-panel"><div id="sheet-body"></div></div></div>
+  <div id="toasts"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

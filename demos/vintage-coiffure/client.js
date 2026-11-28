@@ -2,23 +2,46 @@ import { SALON, SERVICES, WALK_IN_PRICE, BARBERS, OPEN, SLOT, fmtTime, dayKey, d
 
 const $ = (s) => document.querySelector(s);
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const tel = `tel:${SALON.phone.replace(/\s/g, '')}`;
 
 /* ---------- Contenu du site ---------- */
 $('#call').href = tel; $('#call2').href = tel;
 $('#maps').href = SALON.maps; $('#rating').href = SALON.maps;
-$('#addr').textContent = SALON.address;
 
-$('#menu').innerHTML = `
-  <div class="item"><h3>Coupe homme <span class="tag">sans rendez-vous</span></h3><span class="price">${WALK_IN_PRICE} €</span><p>Passez quand vous voulez, selon l'attente.</p></div>
-  ${SERVICES.map((s) => `<div class="item"><h3>${s.name} <span class="tag">sur rendez-vous</span></h3><span class="price">${s.price} €</span><p>${s.desc} · ${s.duration} min</p></div>`).join('')}`;
+const line = (name, price, note) => `<div class="rate"><h3>${name}</h3><span class="lead"></span><span class="p disp">${price} €</span>${note ? `<small>${note}</small>` : ''}</div>`;
+$('#menu').innerHTML = line('Coupe, sans rendez-vous', WALK_IN_PRICE, 'Passez quand vous voulez.') +
+  SERVICES.map((s) => line(`${s.name}, sur rendez-vous`, s.price, `${s.desc}, ${s.duration} min.`)).join('');
 
-$('#team').innerHTML = BARBERS.map((b) => `<div class="member"><div class="avatar" style="--h:${b.hue}">${b.initials}</div><b>${b.name}</b><small>${b.role}</small></div>`).join('');
+$('#team').innerHTML = BARBERS.map((b) => `<div class="member"><span class="avatar" style="--h:${b.hue}">${b.initials}</span><b>${b.name}</b>${b.role === 'Gérant' ? '<small>gérant</small>' : ''}</div>`).join('');
 
 const DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-const now = new Date().getDay();
+const nowD = new Date();
+const today = nowD.getDay();
+const fmtH = (m) => `${Math.floor(m / 60)} h${m % 60 ? String(m % 60).padStart(2, '0') : ''}`;
 $('#hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map((d) =>
-  `<div class="${d === now ? 'today' : ''}"><span>${DAYS[d]}</span><span>${OPEN.closed.includes(d) ? 'Fermé' : `${fmtTime(OPEN.start)} – ${fmtTime(OPEN.end)}`}</span></div>`).join('');
+  `<li class="${d === today ? 'today' : ''}"><span>${DAYS[d]}</span><span>${OPEN.closed.includes(d) ? 'Fermé' : `${fmtH(OPEN.start)} – ${fmtH(OPEN.end)}`}</span></li>`).join('');
+
+// Ouvert / fermé en direct
+(function status() {
+  const el = $('#status');
+  const m = nowD.getHours() * 60 + nowD.getMinutes();
+  const openToday = !OPEN.closed.includes(today);
+  if (openToday && m >= OPEN.start && m < OPEN.end) {
+    el.querySelector('b').textContent = 'Ouvert';
+    el.querySelector('span').textContent = `jusqu'à ${fmtH(OPEN.end)}`;
+  } else {
+    el.classList.add('closed');
+    el.querySelector('b').textContent = 'Fermé';
+    let label = '';
+    if (openToday && m < OPEN.start) label = "aujourd'hui";
+    else for (let i = 1; i <= 7; i++) {
+      const d = new Date(nowD); d.setDate(d.getDate() + i);
+      if (!OPEN.closed.includes(d.getDay())) { label = i === 1 ? 'demain' : DAYS[d.getDay()].toLowerCase(); break; }
+    }
+    el.querySelector('span').textContent = `ouvre ${label} à ${fmtH(OPEN.start)}`;
+  }
+})();
 
 /* ---------- Réservation ---------- */
 connect();
@@ -53,7 +76,7 @@ $('#close').addEventListener('click', close);
 $('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') close(); });
 
 function render() {
-  const titles = ['Choisissez une prestation', 'Avec qui ?', 'Quand ?', 'Vos coordonnées', ''];
+  const titles = ['Prestation', 'Coiffeur', 'Date et heure', 'Vos coordonnées', ''];
   $('#p-title').textContent = st.step === 4 ? 'Réservation' : titles[st.step];
   document.querySelectorAll('#steps i').forEach((i, n) => i.classList.toggle('on', n <= Math.min(st.step, 3)));
   const body = $('#p-body'), foot = $('#p-foot');
@@ -61,12 +84,12 @@ function render() {
 
   if (st.step === 0) {
     body.innerHTML = SERVICES.map((s) => `<button class="opt ${st.service === s.id ? 'on' : ''}" data-service="${s.id}">
-      <div><b>${s.name}</b><small>${s.desc} · ${s.duration} min</small></div><span class="price">${s.price} €</span></button>`).join('');
+      <div><b>${s.name}</b><small>${s.desc}, ${s.duration} min</small></div><span class="price">${s.price} €</span></button>`).join('');
     foot.innerHTML = `<button class="btn gold" data-next ${st.service ? '' : 'disabled'}>Continuer</button>`;
   }
   if (st.step === 1) {
-    body.innerHTML = `<button class="opt ${st.barber === 'any' ? 'on' : ''}" data-barber="any"><span class="any">✦</span><div><b>Peu importe</b><small>Le premier coiffeur disponible</small></div></button>` +
-      BARBERS.map((b) => `<button class="opt ${st.barber === b.id ? 'on' : ''}" data-barber="${b.id}"><span class="avatar" style="--h:${b.hue}">${b.initials}</span><div><b>${b.name}</b><small>${b.role}</small></div></button>`).join('');
+    body.innerHTML = `<button class="opt ${st.barber === 'any' ? 'on' : ''}" data-barber="any"><span class="any">?</span><div><b>Peu importe</b><small>Le premier coiffeur disponible</small></div></button>` +
+      BARBERS.map((b) => `<button class="opt ${st.barber === b.id ? 'on' : ''}" data-barber="${b.id}"><span class="avatar" style="--h:${b.hue}">${b.initials}</span><div><b>${b.name}</b>${b.role === 'Gérant' ? '<small>Gérant</small>' : ''}</div></button>`).join('');
     foot.innerHTML = `${back}<button class="btn gold" data-next ${st.barber ? '' : 'disabled'}>Continuer</button>`;
   }
   if (st.step === 2) {
@@ -79,7 +102,7 @@ function render() {
     }
     body.innerHTML = `<div class="label">Jour</div>
       <div class="days">${days.map((d) => `<button class="day ${st.day === dayKey(d) ? 'on' : ''}" data-day="${dayKey(d)}"><small>${d.toLocaleDateString('fr-FR', { weekday: 'short' })}</small><b>${d.getDate()}</b></button>`).join('')}</div>
-      <div class="label">Créneaux disponibles${st.barber !== 'any' ? ` avec ${barberName(st.barber)}` : ''}</div>
+      <div class="label">Créneaux libres${st.barber !== 'any' ? ` avec ${barberName(st.barber)}` : ''}</div>
       <div class="slots">${slots}</div>`;
     foot.innerHTML = `${back}<button class="btn gold" data-next ${st.time != null ? '' : 'disabled'}>Continuer</button>`;
   }
@@ -88,7 +111,7 @@ function render() {
     body.innerHTML = `<div class="recap">
         <div><span>Prestation</span><b>${service().name}</b></div>
         <div><span>Coiffeur</span><b>${barberName(st.barber)}</b></div>
-        <div><span>Date</span><b style="text-transform:capitalize">${dayLabel(d, true)} · ${fmtTime(st.time)}</b></div>
+        <div><span>Date</span><b>${cap(dayLabel(d, true))}, ${fmtTime(st.time)}</b></div>
         <div><span>Prix</span><b>${service().price} € (à régler au salon)</b></div>
       </div>
       <label class="field">Prénom<input id="f-name" autocomplete="given-name" value="${esc(st.name)}" placeholder="Votre prénom"></label>
@@ -100,14 +123,14 @@ function render() {
     const d = days.find((x) => dayKey(x) === st.day);
     const when = `${dayLabel(d, true)} à ${fmtTime(st.time)}`;
     const states = {
-      wait: ['wait', '⏳', 'Demande envoyée', `Le salon reçoit votre demande pour <b>${when}</b> et la confirme dans un instant.`],
+      wait: ['wait', '', 'Demande envoyée', `Le salon reçoit votre demande pour <b>${when}</b> et la confirme dans un instant.`],
       ok: ['ok', '✓', 'Rendez-vous confirmé', `À <b>${when}</b> avec ${barberName(st.assigned)}. On vous attend !`],
       no: ['no', '✕', 'Créneau indisponible', 'Le salon n\'a pas pu accepter ce créneau. Choisissez-en un autre.'],
     }[st.status];
     body.innerHTML = `<div class="done">
       <div class="seal ${states[0]}">${states[1]}</div>
       <h3>${states[2]}</h3><p>${states[3]}</p>
-      ${st.status !== 'no' ? `<div class="sms"><small>La veille, vous recevrez ce rappel :</small>
+      ${st.status !== 'no' ? `<div class="sms"><small>La veille, vous recevrez ce SMS :</small>
       <div class="bubble">Vintage Coiffure : rappel de votre rendez-vous demain à ${fmtTime(st.time)} (${service().name}). Un empêchement ? Répondez ANNULER.</div></div>` : ''}
     </div>`;
     foot.innerHTML = st.status === 'no'

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vintage Coiffure · Salon de coiffure à Béziers</title>
+  <meta name="description" content="Vintage Coiffure, salon de coiffure à Béziers. Coupe homme, coupe + barbe. Réservez en ligne 24h/24.">
+  <meta name="theme-color" content="#0e1d18">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="mono">V</span><b>Vintage Coiffure</b></a>
+      <nav><a href="#prestations">Prestations</a><a href="#equipe">L'équipe</a><a href="#salon">Le salon</a><a href="#infos">Infos</a></nav>
+      <button class="btn gold sm" data-book>Réserver</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="lamps"><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span></div>
+    <span class="pole l"></span><span class="pole r"></span>
+    <div class="frame">
+      <div class="eyebrow">Salon de coiffure · Béziers</div>
+      <h1>Vintage<em>Coiffure</em></h1>
+      <p class="lead">Le charme d'un salon d'antan, des coupes d'aujourd'hui. Réservez votre place en quelques secondes, sans attendre au téléphone.</p>
+      <a class="rating" id="rating" target="_blank" rel="noopener"><span class="stars">★★★★★</span><b>4,5</b> · 26 avis Google</a>
+      <div class="cta">
+        <button class="btn gold" data-book>Réserver en ligne</button>
+        <a class="btn line" id="call">Appeler le salon</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ribbon">
+    <div class="wrap"><div>
+      <span>Coupe sans rendez-vous <b>10 €</b></span>
+      <span class="serif" style="color:var(--gold)">✦</span>
+      <span>Avec rendez-vous, <strong>votre coiffeur vous attend</strong> · 13 €</span>
+    </div></div>
+  </section>
+
+  <section class="block" id="prestations">
+    <div class="wrap">
+      <div class="head"><div class="orn">✂</div><div class="eyebrow">La carte</div><h2>Prestations</h2><p>Des tarifs simples, sans surprise.</p></div>
+      <div class="menu" id="menu"></div>
+    </div>
+  </section>
+
+  <section class="block" id="equipe">
+    <div class="wrap">
+      <div class="head"><div class="orn">✦</div><div class="eyebrow">Nos coiffeurs</div><h2>L'équipe</h2><p>Choisissez votre coiffeur au moment de réserver.</p></div>
+      <div class="team" id="team"></div>
+    </div>
+  </section>
+
+  <section class="block" id="salon">
+    <div class="wrap">
+      <div class="head"><div class="orn">✦</div><div class="eyebrow">L'ambiance</div><h2>Le salon</h2><p>Bois, laiton et lumière chaude : un salon comme on n'en fait plus.</p></div>
+      <div class="gallery">
+        <div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M8 5l1.5-2h5L16 5"/></svg><span>Photo du salon</span></div></div>
+        <div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 16.5L20 3M15.5 16.5L4 3"/></svg><span>Coupe</span></div></div>
+        <div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 20h16M6 20V9a6 6 0 0112 0v11M9 13h6"/></svg><span>Fauteuils</span></div></div>
+        <div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7 3v18M17 3v18M7 8h10M7 16h10"/></svg><span>Barbe</span></div></div>
+        <div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 21h6"/></svg><span>Détails vintage</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="infos">
+    <div class="wrap">
+      <div class="head"><div class="orn">✦</div><div class="eyebrow">Nous trouver</div><h2>Horaires & accès</h2></div>
+      <div class="infos">
+        <div class="card"><h3>Horaires</h3><div class="hours" id="hours"></div></div>
+        <div class="card">
+          <h3>Accès</h3>
+          <p id="addr"></p>
+          <p>À deux pas du rond-point Wilson.</p>
+          <div class="row"><a class="btn line sm" id="maps" target="_blank" rel="noopener">Itinéraire</a><a class="btn line sm" id="call2">Appeler</a><button class="btn gold sm" data-book>Réserver</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="mono" style="margin:0 auto 12px">V</div>
+    © Vintage Coiffure · Béziers<br>
+    <span style="opacity:.7">Maquette de démonstration réalisée par ZeynFreelance</span>
+  </footer>
+
+  <div class="sticky"><button class="btn gold block" data-book>Réserver en ligne</button></div>
+
+  <div class="sheet" id="sheet">
+    <div class="panel">
+      <div class="p-head">
+        <div class="grab"></div>
+        <div class="t"><h3 id="p-title">Réserver</h3><button class="close" id="close">✕</button></div>
+        <div class="steps" id="steps"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="p-body" id="p-body"></div>
+      <div class="p-foot" id="p-foot"></div>
+    </div>
+  </div>
+
+  <script type="module" src="client.js"></script>
+</body>
+</html>

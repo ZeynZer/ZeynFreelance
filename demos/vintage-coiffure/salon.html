@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Espace salon · Vintage Coiffure</title>
+  <meta name="theme-color" content="#0e1d18">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="salon.css">
+</head>
+<body class="salon">
+  <div class="intro" id="intro">
+    <div class="frame">
+      <div class="mono" style="margin:0 auto 14px">V</div>
+      <div class="eyebrow">Espace salon</div>
+      <h1>Vintage<em>Coiffure</em></h1>
+      <p class="lead">Le planning de toute l'équipe, sur votre téléphone. Les réservations arrivent en direct.</p>
+      <button class="btn gold" id="start">Ouvrir le planning</button>
+    </div>
+  </div>
+
+  <header class="s-top">
+    <div class="s-row">
+      <div class="brand"><span class="mono">V</span><div><b>Planning</b><small id="today-label"></small></div></div>
+      <div class="s-actions">
+        <span class="live"><i></i>En direct</span>
+        <button class="btn line sm" id="qr-btn">QR code</button>
+      </div>
+    </div>
+    <div class="days" id="days"></div>
+  </header>
+
+  <main class="s-main">
+    <section id="pending"></section>
+    <section class="stats" id="stats"></section>
+    <section class="grid-wrap"><div class="grid" id="grid"></div></section>
+    <section class="card remind">
+      <h3>Rappels automatiques</h3>
+      <p>La veille de chaque rendez-vous, le client reçoit un rappel. Fini les oublis et les créneaux vides.</p>
+      <div class="bubble">Vintage Coiffure : rappel de votre rendez-vous demain à 17h00 (Coupe + barbe). Un empêchement ? Répondez ANNULER.</div>
+    </section>
+    <p class="foot-note">Maquette de démonstration réalisée par ZeynFreelance</p>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="qr" id="qr">
+    <div class="qr-card">
+      <div class="eyebrow">Testez vous-même</div>
+      <h2>Scannez et réservez</h2>
+      <img src="qr.png" alt="QR code vers le site de réservation" width="240" height="240">
+      <p>Le rendez-vous apparaîtra ici en direct.</p>
+      <button class="btn line" id="qr-close">Fermer</button>
+    </div>
+  </div>
+
+  <script type="module" src="salon.js"></script>
+</body>
+</html>
